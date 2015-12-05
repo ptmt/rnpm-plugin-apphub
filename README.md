@@ -1,4 +1,7 @@
-Ensure you have installed React Native Package Management ([rnpm](https://github.com/rnpm/rnpm)).
+
+## Usage
+
+Ensure you have installed React Native Package Manager ([https://github.com/rnpm/rnpm](https://github.com/rnpm/rnpm)).
 
 ```
   npm install rnpm-plugin-apphub
