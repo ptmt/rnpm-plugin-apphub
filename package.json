@@ -1,0 +1,33 @@
+{
+  "name": "rnpm-plugin-apphub",
+  "version": "1.0.0",
+  "description": "Build, export and upload .ipa to AppHub Cloud",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint ./"
+  },
+  "keywords": [
+    "rnpm",
+    "react-native",
+    "react-native apphub",
+    "apphub"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ptmt/rnpm-plugin-apphub.git"
+  },
+  "engines": {
+    "node": ">= 4.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ptmt/rnpm-plugin-apphub/issues"
+  },
+  "homepage": "https://github.com/ptmt/rnpm-plugin-apphub#readme",
+  "license": "MIT",
+  "dependencies": {
+    "glob": "^6.0.1",
+    "npmlog": "^2.0.0",
+    "plist": "^1.2.0",
+    "xcode": "^0.8.2"
+  }
+}
