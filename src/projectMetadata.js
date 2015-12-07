@@ -19,9 +19,10 @@ module.exports = function getProjectMetadata(projectConfig) {
   const plist = plistParser.parse(
     fs.readFileSync(plistPath, 'utf-8')
   );
-  //console.log(plist)
+
   return {
     version: plist.CFBundleVersion,
+    shortVersion: plist.CFBundleShortVersionString,
     bundleName: plist.CFBundleName,
   };
 };

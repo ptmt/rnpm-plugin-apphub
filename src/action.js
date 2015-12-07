@@ -52,7 +52,6 @@ module.exports = function link(config, args) {
   const lastGitMessage = childProcess.execSync('git log -1 --pretty=%B | cat').toString().split('\n')[0];
   const metadata = getProjectMetadata(project);
 
-
   /*
    * Put file onto the server
    */
@@ -72,7 +71,7 @@ module.exports = function link(config, args) {
            "target": "all",
            "name": "${metadata.version}",
            "description": "${lastGitMessage} // uploaded by rnpm-plugin-apphub",
-           "app_versions": ["${metadata.version}"]
+           "app_versions": ["${metadata.shortVersion}"]
       }' \
       -L https://api.apphub.io/v1/upload \
       --upload-file ./build/moneyed.ipa
