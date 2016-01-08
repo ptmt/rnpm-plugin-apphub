@@ -60,17 +60,17 @@ module.exports = function link(config, args) {
     return;
   }
 
-  log.info('Uploading build', metadata.version);
-  log.info('Uploading build', lastGitMessage);
+  log.info('Uploading build...', metadata.version, lastGitMessage);
 
   const result = childProcess.execSync(`
     curl -X PUT \
      -H "X-AppHub-Application-ID: ${args[0]}" \
      -H "X-AppHub-Application-Secret: ${args[1]}" \
+     -H "Content-Type: application/zip" \
      -H 'X-AppHub-Build-Metadata: {
            "target": "all",
            "name": "${metadata.version}",
-           "description": "${lastGitMessage} // uploaded by rnpm-plugin-apphub",
+           "description": "${lastGitMessage} // by rnpm-plugin-apphub",
            "app_versions": ["${metadata.shortVersion}"]
       }' \
       -L https://api.apphub.io/v1/upload \
