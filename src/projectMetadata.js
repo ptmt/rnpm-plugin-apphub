@@ -4,7 +4,9 @@ const xcode = require('xcode');
 const path = require('path');
 const fs = require('fs');
 
-module.exports = function getProjectMetadata(projectConfig) {
+module.exports = {};
+
+module.exports.getPlistPath = function(projectConfig) {
   const project = xcode.project(projectConfig.ios.pbxprojPath).parseSync();
 
   const plistPath = path.join(
@@ -13,6 +15,16 @@ module.exports = function getProjectMetadata(projectConfig) {
   );
 
   if (!fs.existsSync(plistPath)) {
+    return false;
+  }
+
+  return plistPath;
+};
+
+module.exports.getProjectMetadata = function(projectConfig) {
+  const plistPath = module.exports.getPlistPath(projectConfig);
+
+  if (!plistPath) {
     return false;
   }
 
