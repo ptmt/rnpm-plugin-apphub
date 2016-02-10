@@ -3,9 +3,11 @@ const log = require('npmlog');
 const https = require('https');
 const fs = require('fs');
 const url = require('url');
-const getProjectMetadata = require('./projectMetadata');
+const projectMetadata = require('./projectMetadata');
 const glob = require('glob');
 const childProcess = require('child_process');
+const uuid = require('node-uuid');
+const mkdirp = require('mkdirp');
 
 const APPHUB_API = 'https://api.apphub.io/v1/upload';
 
@@ -30,28 +32,42 @@ module.exports = function link(config, args) {
   }
 
   /*
-   * Find .ipa to upload
+   * Build application .zip
    */
 
-  // TODO: would be nice to reuse that from core
-  const GLOB_EXCLUDE_PATTERN = ['node_modules/**', 'Examples/**', 'examples/**', 'Pods/**'];
+   const plistFile = projectMetadata.getPlistPath(project)
+   const outputZip = path.join(process.cwd().replace(/ /g, '\\ '), './build/app.zip');
+   const tmpDir = path.join('/tmp', 'apphub', uuid.v4());
+   const buildDir = path.join(tmpDir, 'ios');
+   mkdirp.sync(buildDir);
 
-  const ipas = glob.sync('**/*.ipa', {
-    pwd: project.ios.sourceDir,
-    ignore: GLOB_EXCLUDE_PATTERN,
-  });
+   var options = [
+     '--entry-file', 'index.ios.js',
+     '--dev', false,
+     '--bundle-output', path.join(buildDir, 'main.jsbundle'),
+     '--assets-dest', buildDir,
+     '--platform', 'ios',
+   ];
 
-  if (ipas.length === 0) {
-    log.error('ERRIPA', `No .ipa files found. Please, export the application`);
-    return;
-  }
+   var cmds = [
+     'node node_modules/react-native/local-cli/cli.js bundle ' + options.join(' '),
+     'cp ' + plistFile + ' ' + buildDir,
+     'cd ' + tmpDir + ' && zip -r ' + outputZip + ' ios',
+   ];
+   for (var i = 0; i < cmds.length; i++) {
+     var cmd = cmds[i];
+     childProcess.execSync(cmd, { stdio: [0, 1, 2] }, { cwd: process.cwd()});
+   }
 
   /*
    * Filling the metadata from plist and last git commit
    */
   const lastGitMessage = childProcess.execSync('git log -1 --pretty=%B | cat').toString().split('\n')[0];
-  const metadata = getProjectMetadata(project);
-
+  const metadata =  projectMetadata.getProjectMetadata(project);
+  if (!metadata) {
+    log.error('ERRPLIST', '.plist is not found');
+    return;
+  }
   /*
    * Put file onto the server
    */
@@ -74,7 +90,7 @@ module.exports = function link(config, args) {
            "app_versions": ["${metadata.shortVersion}"]
       }' \
       -L https://api.apphub.io/v1/upload \
-      --upload-file ./build/moneyed.ipa
+      --upload-file ./build/app.zip
   `);
 
   log.info(result);
