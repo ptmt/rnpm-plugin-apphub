@@ -1,6 +1,6 @@
 {
   "name": "rnpm-plugin-apphub",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Build, export and upload .ipa to AppHub Cloud",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,8 @@
   "license": "MIT",
   "dependencies": {
     "glob": "^6.0.1",
+    "mkdirp": "^0.5.1",
+    "node-uuid": "^1.4.7",
     "npmlog": "^2.0.0",
     "plist": "^1.2.0",
     "xcode": "^0.8.2"
