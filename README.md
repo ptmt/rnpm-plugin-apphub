@@ -9,14 +9,7 @@ Ensure you have installed React Native Package Manager ([https://github.com/rnpm
   # 0. commit
   git commit -am "Add new screen to statistics"
 
-  # 1. build
-  xcodebuild -scheme $SCHEME archive -archivePath $ARCHIVE_PATH
-
-  # 2. export
-  xcodebuild -exportArchive -archivePath $ARCHIVE_PATH \
-    -exportPath $IPA_PATH -exportOptionsPlist $PLIST \
-
-  # 3. upload
+  # 1. upload
   rnpm apphub [appid] [token]
 
 ```
