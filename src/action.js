@@ -36,6 +36,10 @@ module.exports = function link(config, args) {
    */
 
    const plistFile = projectMetadata.getPlistPath(project)
+   if (!plistFile) {
+     log.error('ERRPLIST', '.plist is not found');
+     return;
+   }
    const outputZip = path.join(process.cwd().replace(/ /g, '\\ '), './build/app.zip');
    const tmpDir = path.join('/tmp', 'apphub', uuid.v4());
    const buildDir = path.join(tmpDir, 'ios');
