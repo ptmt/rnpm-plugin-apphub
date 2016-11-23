@@ -6,7 +6,7 @@ const url = require('url');
 const projectMetadata = require('./projectMetadata');
 const glob = require('glob');
 const childProcess = require('child_process');
-const uuid = require('node-uuid');
+const uuid = require('uuid');
 const mkdirp = require('mkdirp');
 
 const APPHUB_API = 'https://api.apphub.io/v1/upload';
